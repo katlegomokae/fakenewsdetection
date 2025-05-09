@@ -93,8 +93,8 @@ with col2:
 st.markdown("---")
 st.subheader("☁️ Word Clouds")
 
-real_news = test_data1[test_data1["label"] == 0]["text"].tolist()
-fake_news = test_data1[test_data1["label"] == 1]["text"].tolist()
+real_news = test_data[test_data["label"] == 0]["text"].tolist()
+fake_news = test_data[test_data["label"] == 1]["text"].tolist()
 
 real_text = " ".join(real_news)
 fake_text = " ".join(fake_news)
