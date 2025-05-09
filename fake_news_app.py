@@ -52,7 +52,7 @@ with col1:
             probabilities = model.predict_proba(vect_input)[0]
             confidence = np.max(probabilities)
             confidence_percent = round(confidence * 100, 2)
-            label = "REAL" if prediction == 1 else "FAKE"
+            label = "REAL" if prediction == 0 else "FAKE"
 
             # Confidence-based flag
             if confidence >= 0.6:
