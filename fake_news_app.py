@@ -63,7 +63,7 @@ with col1:
                 flag = "❗ Very Uncertain — Immediate Review Recommended"
 
             # Show results
-            if prediction == 1:
+            if prediction == 0:
                 st.markdown(f"<h2 style='color: green;'>{label}</h2>", unsafe_allow_html=True)
             else:
                 st.markdown(f"<h2 style='color: red;'>{label}</h2>", unsafe_allow_html=True)
