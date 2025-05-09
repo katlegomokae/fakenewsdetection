@@ -17,7 +17,7 @@ model = joblib.load("lr_model.jb")
 vectorizer = joblib.load("vectorizer.jb")
 
 # Load test data for evaluation
-test_data = pd.read_csv("test_data.csv")
+test_data = pd.read_excel("test_data1.xlsx")
 X_test = vectorizer.transform(test_data['text'])
 y_true = test_data['label']
 y_pred = model.predict(X_test)
@@ -93,8 +93,8 @@ with col2:
 st.markdown("---")
 st.subheader("☁️ Word Clouds")
 
-real_news = test_data[test_data["label"] == 0]["text"].tolist()
-fake_news = test_data[test_data["label"] == 1]["text"].tolist()
+real_news = test_data1[test_data1["label"] == 0]["text"].tolist()
+fake_news = test_data1[test_data1["label"] == 1]["text"].tolist()
 
 real_text = " ".join(real_news)
 fake_text = " ".join(fake_news)
