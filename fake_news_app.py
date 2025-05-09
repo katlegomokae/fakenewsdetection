@@ -17,7 +17,7 @@ model = joblib.load("lr_model.jb")
 vectorizer = joblib.load("vectorizer.jb")
 
 # Load test data for evaluation
-test_data = pd.read_excel("test_data1.xlsx")
+test_data = pd.read_csv("test_data1.csv")
 X_test = vectorizer.transform(test_data['text'])
 y_true = test_data['label']
 y_pred = model.predict(X_test)
