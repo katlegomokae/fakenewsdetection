@@ -17,7 +17,7 @@ model = joblib.load("lr_model.jb")
 vectorizer = joblib.load("vectorizer.jb")
 
 # Load test data for evaluation
-test_data = pd.read_csv("test_data.csv")
+test_data = pd.read_csv("test_data1.csv")
 X_test = vectorizer.transform(test_data['text'])
 y_true = test_data['label']
 y_pred = model.predict(X_test)
@@ -52,7 +52,7 @@ with col1:
             probabilities = model.predict_proba(vect_input)[0]
             confidence = np.max(probabilities)
             confidence_percent = round(confidence * 100, 2)
-            label = "REAL" if prediction == 1 else "FAKE"
+            label = "REAL" if prediction == 0 else "FAKE"
 
             # Confidence-based flag
             if confidence >= 0.6:
@@ -63,7 +63,7 @@ with col1:
                 flag = "❗ Very Uncertain — Immediate Review Recommended"
 
             # Show results
-            if prediction == 1:
+            if prediction == 0:
                 st.markdown(f"<h2 style='color: green;'>{label}</h2>", unsafe_allow_html=True)
             else:
                 st.markdown(f"<h2 style='color: red;'>{label}</h2>", unsafe_allow_html=True)
