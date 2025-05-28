@@ -45,52 +45,54 @@ with col1:
             input_text = uploaded_file.read().decode("utf-8")
 
     if st.button("🕵️‍♀️ CHECK"):
-        if input_text.strip() != "":
-            # Transform and predict
-            vect_input = vectorizer.transform([input_text])
-            prediction = model.predict(vect_input)[0]
-            probabilities = model.predict_proba(vect_input)[0]
-            confidence = np.max(probabilities)
-            confidence_percent = round(confidence * 100, 2)
-            label = "REAL" if prediction == 1 else "FAKE"
+    if input_text.strip() != "":
+        # Transform and predict
+        vect_input = vectorizer.transform([input_text])
+        prediction = model.predict(vect_input)[0]
+        probabilities = model.predict_proba(vect_input)[0]
+        confidence = np.max(probabilities)
+        confidence_percent = round(confidence * 100, 2)
+        label = "REAL" if prediction == 1 else "FAKE"
 
-            # Confidence-based flag
-            if confidence >= 0.6:
-                flag = "✅ Confident Prediction"
-            elif 0.4 <= confidence < 0.6:
-                flag = "⚠️ Uncertain — Please Review"
-            else:
-                flag = "❗ Very Uncertain — Immediate Review Recommended"
-
-            # Show results
-            if prediction == 1:
-                st.markdown(f"<h2 style='color: green;'>{label}</h2>", unsafe_allow_html=True)
-            else:
-                st.markdown(f"<h2 style='color: red;'>{label}</h2>", unsafe_allow_html=True)
-
-            st.markdown(f"**Confidence:** {confidence_percent}%")
-            st.markdown(f"**Status:** {flag}")
+        # Updated Confidence Flagging
+        if confidence >= 0.6:
+            flag = "✅ Confident Prediction"
+        elif 0.4 <= confidence < 0.6:
+            flag = "⚠️ REVIEW — Model is Uncertain"
         else:
-            st.warning("⚠️ Please enter or upload some text.")
-        # Save uncertain predictions for future review
-            if confidence < 0.6:
-                import csv
-                import os
+            flag = "❗ REVIEW — Very Low Confidence (Likely Unfamiliar News)"
 
-                flagged_data = {
-                    "text": input_text.strip(),
-                    "predicted_label": label,
-                    "confidence": confidence_percent,
-                    "flag": flag
+        # Display prediction
+        if prediction == 1:
+            st.markdown(f"<h2 style='color: green;'>{label}</h2>", unsafe_allow_html=True)
+        else:
+            st.markdown(f"<h2 style='color: red;'>{label}</h2>", unsafe_allow_html=True)
+
+        st.markdown(f"**Confidence:** {confidence_percent}%")
+        st.markdown(f"**Status:** {flag}")
+
+        # Save uncertain predictions for future review
+        if confidence < 0.6:
+            import csv
+            import os
+
+            flagged_data = {
+                "text": input_text.strip(),
+                "predicted_label": label,
+                "confidence": confidence_percent,
+                "flag": flag
             }
 
-                file_exists = os.path.isfile("flagged_reviews.csv")
+            file_exists = os.path.isfile("flagged_reviews.csv")
 
-                with open("flagged_reviews.csv", mode='a', newline='', encoding='utf-8') as file:
-                    writer = csv.DictWriter(file, fieldnames=flagged_data.keys())
-                    if not file_exists:
-                        writer.writeheader()
-                    writer.writerow(flagged_data)
+            with open("flagged_reviews.csv", mode='a', newline='', encoding='utf-8') as file:
+                writer = csv.DictWriter(file, fieldnames=flagged_data.keys())
+                if not file_exists:
+                    writer.writeheader()
+                writer.writerow(flagged_data)
+    else:
+        st.warning("⚠️ Please enter or upload some text.")
+
 
 
 # === Column 2: Model Performance ===
