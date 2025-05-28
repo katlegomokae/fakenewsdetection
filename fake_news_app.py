@@ -132,3 +132,24 @@ if st.checkbox("Show Word Clouds"):
         st.markdown("### 🔴 Fake News Word Cloud")
         fake_wc = WordCloud(width=400, height=200, background_color='white').generate(fake_text)
         st.image(fake_wc.to_array())
+# === Review Flagged Predictions ===
+st.markdown("---")
+st.subheader("🔎 Review Flagged Predictions")
+
+
+if os.path.exists("flagged_reviews.csv"):
+    flagged_df = pd.read_csv("flagged_reviews.csv")
+    
+    if st.checkbox("Show Flagged Predictions Table"):
+        st.dataframe(flagged_df, use_container_width=True)
+
+    # Convert DataFrame to CSV for download
+    csv_data = flagged_df.to_csv(index=False).encode('utf-8')
+    st.download_button(
+        label="📥 Download Flagged Reviews",
+        data=csv_data,
+        file_name='flagged_reviews.csv',
+        mime='text/csv'
+    )
+else:
+    st.info("ℹ️ No flagged predictions yet. Once low-confidence news is detected, it will appear here.")
