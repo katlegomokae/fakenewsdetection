@@ -57,7 +57,7 @@ with col1:
             # Confidence-based flag
             if confidence >= 0.6:
                 flag = "✅ Confident Prediction"
-            elif 0.5 <= confidence < 0.6:
+            elif 0.4 <= confidence < 0.6:
                 flag = "⚠️ Uncertain — Please Review"
             else:
                 flag = "❗ Very Uncertain — Immediate Review Recommended"
