@@ -72,6 +72,26 @@ with col1:
             st.markdown(f"**Status:** {flag}")
         else:
             st.warning("⚠️ Please enter or upload some text.")
+        # Save uncertain predictions for future review
+            if confidence < 0.6:
+                import csv
+                import os
+
+                flagged_data = {
+                    "text": input_text.strip(),
+                    "predicted_label": label,
+                    "confidence": confidence_percent,
+                    "flag": flag
+            }
+
+                file_exists = os.path.isfile("flagged_reviews.csv")
+
+                with open("flagged_reviews.csv", mode='a', newline='', encoding='utf-8') as file:
+                    writer = csv.DictWriter(file, fieldnames=flagged_data.keys())
+                    if not file_exists:
+                        writer.writeheader()
+                    writer.writerow(flagged_data)
+
 
 # === Column 2: Model Performance ===
 with col2:
