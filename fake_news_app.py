@@ -4,8 +4,6 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
-from sklearn.metrics import confusion_matrix, accuracy_score, precision_score, recall_score
-from wordcloud import WordCloud
 
 # Set page config
 st.set_page_config(page_title="Fake News Detector", layout="wide")
@@ -94,47 +92,6 @@ with col1:
         st.warning("⚠️ Please enter or upload some text.")
 
 
-
-# === Column 2: Model Performance ===
-with col2:
-    st.subheader("📊 Model Performance Metrics")
-    st.metric("Accuracy", f"{accuracy:.2f}")
-    st.metric("Precision", f"{precision:.2f}")
-    st.metric("Recall", f"{recall:.2f}")
-
-    if st.checkbox("Show Confusion Matrix"):
-        cm = confusion_matrix(y_true, y_pred)
-        fig, ax = plt.subplots()
-        sns.heatmap(cm, annot=True, fmt='d', cmap="Blues", xticklabels=["Fake", "Real"], yticklabels=["Fake", "Real"])
-        plt.xlabel("Predicted")
-        plt.ylabel("Actual")
-        plt.title("Confusion Matrix")
-        st.pyplot(fig)
-
-# === Word Cloud Section ===
-st.markdown("---")
-st.subheader("☁️ Word Clouds")
-
-real_news = test_data[test_data["label"] == 1]["text"].tolist()
-fake_news = test_data[test_data["label"] == 0]["text"].tolist()
-
-real_text = " ".join(real_news)
-fake_text = " ".join(fake_news)
-
-if st.checkbox("Show Word Clouds"):
-    col3, col4 = st.columns(2)
-    with col3:
-        st.markdown("### 🔵 Real News Word Cloud")
-        real_wc = WordCloud(width=400, height=200, background_color='white').generate(real_text)
-        st.image(real_wc.to_array())
-
-    with col4:
-        st.markdown("### 🔴 Fake News Word Cloud")
-        fake_wc = WordCloud(width=400, height=200, background_color='white').generate(fake_text)
-        st.image(fake_wc.to_array())
-# === Review Flagged Predictions ===
-st.markdown("---")
-st.subheader("🔎 Review Flagged Predictions")
 
 
 if os.path.exists("flagged_reviews.csv"):
